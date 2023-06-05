@@ -1,9 +1,9 @@
 # gcm-storefinder
 
-https://location.am-all.net からデータをクローリングして地図を作りました。
+Thanks to https://github.com/bemusicscript team
 
-全ての機器が一緒に設置されているゲーセン地図がないので作りました。
+This repo is origin from https://github.com/bemusicscript/gcm-storefinder/ but skew a bit for Singapore arcade only.
 
 # DEMO
 
-https://bemusicscript.github.io/gcm-storefinder/
+https://xuyixin1996.github.io/gcm-storefinder/

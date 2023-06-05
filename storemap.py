@@ -1,5 +1,5 @@
 #!/usr/bin/python -u
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # <?php exit;
 
 """
@@ -13,15 +13,16 @@ import json
 import requests
 
 STORES = {
-    "ongeki": "https://location.am-all.net/alm/location?gm=88&at={prefecture}&ct=1000",
-    "chunithm": "https://location.am-all.net/alm/location?gm=109&lang=en&ct=1000&at={prefecture}",
-    "maimai": "https://location.am-all.net/alm/location?gm=96&lang=en&ct=1000&at={prefecture}",
+    "chunithm": "https://location.am-all.net/alm/location?gm=104&lang=en&ct=1003",
+    "maimai": "https://location.am-all.net/alm/location?gm=98&lang=en&ct=1003",
 }
+
 
 def dupe_stores():
     """
     Find duplicate stores
     """
+
     def _find_dupe_store(store_a, store_b):
         """ (list of dict, list of dict) -> list of dict
 
@@ -48,30 +49,30 @@ def dupe_stores():
         store_file.write(json.dumps(result))
     return True
 
+
 def crawl_stores():
     """
     Crawl stores and save to file
     """
+
     def _crawl_location(url):
         """ (str) -> json
 
         Crawl from location.am-all.net
         """
         result = []
-        # Grab all prefectures
-        for _prefecture in range(47):
-            # Parse URLs, get addresses
-            resp_text = requests.get(url.format(prefecture=_prefecture)).text
-            _loc = re.findall(r'//maps.google.com/maps\?q=(.*)\&zoom', resp_text)
-            _addr = re.findall(r'<span class="store_address">(.*)</span>', resp_text)
-            for i, _raw in enumerate(_loc):
-                _name, _location = _raw.split("@")
-                _location = [float(i) for i in _location.split(",")]
-                result.append({
-                    'name': _name,
-                    'address': _addr[i],
-                    'location': _location,
-                })
+        # Parse URLs, get addresses
+        resp_text = requests.get(url).text
+        _loc = re.findall(r'//maps.google.com/maps\?q=(.*)\&zoom', resp_text)
+        _addr = re.findall(r'<span class="store_address">(.*)</span>', resp_text)
+        for i, _raw in enumerate(_loc):
+            _name, _location = _raw.split("@")
+            _location = [float(i) for i in _location.split(",")]
+            result.append({
+                'name': _name,
+                'address': _addr[i],
+                'location': _location,
+            })
         return result
 
     for store_name, store_url in STORES.items():
@@ -80,6 +81,7 @@ def crawl_stores():
             store_file.write(json.dumps(_result))
 
     return True
+
 
 if __name__ == "__main__":
     crawl_stores()
